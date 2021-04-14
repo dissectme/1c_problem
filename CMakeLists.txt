@@ -14,11 +14,12 @@ set(INCLUDE_DIR ${1c_problem_SOURCE_DIR}/include)
 set(SOURCE_DIR ${1c_problem_SOURCE_DIR}/src)
 set(TEST_DIR ${1c_problem_SOURCE_DIR}/tests)
 
-include_directories(${INCLUDE_DIR} ${LODEPNG_DIR})
+include_directories(${INCLUDE_DIR})
 
 add_executable(
     a.out
     ${SOURCE_DIR}/main.cpp
+    ${SOURCE_DIR}/lodepng.cpp
     )
 
 ##############################################################
