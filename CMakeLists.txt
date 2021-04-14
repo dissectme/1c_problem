@@ -12,13 +12,15 @@ add_compile_options(
 
 set(INCLUDE_DIR ${1c_problem_SOURCE_DIR}/include)
 set(SOURCE_DIR ${1c_problem_SOURCE_DIR}/src)
+set(LODEPNG_DIR ${1c_problem_SOURCE_DIR}/lodepng)
 set(TEST_DIR ${1c_problem_SOURCE_DIR}/tests)
 
-include_directories(${INCLUDE_DIR})
+include_directories(${INCLUDE_DIR} ${LODEPNG_DIR})
 
 add_executable(
     a.out
     ${SOURCE_DIR}/main.cpp
+    ${LODEPNG_DIR}/lodepng.cpp
     )
 
 ##############################################################
