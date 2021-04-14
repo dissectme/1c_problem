@@ -16,8 +16,8 @@ int main(int argc, char* argv[]) {
   std::string filename(argv[1]);
 
   unsigned error = 0;
-  auto i = Image::FromFile(filename, error).value();
-  Field f(i);
+  auto img = Image::FromFile(filename, error).value();
+  Field f(img);
 
   f.FindFigures();
 

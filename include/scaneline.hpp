@@ -12,12 +12,12 @@ class Field {
  public:
   std::vector<size_t> ScanArea(int x_begin, int y_begin, int dx, int dy) {
     std::vector<size_t> x_sums(dx);
-    for (int i = x_begin; i < x_begin + dx; i++) {
+    for (int i = x_begin; i < x_begin + dx - 10; i++) {
       //  _||_||_
       //  _||_||_
       //   || ||
       size_t x_sum = 0;
-      for (int j = y_begin; j < y_begin + dy; j++) {
+      for (int j = y_begin; j < y_begin + dy - 10; j++) {
         if (image.IsBlackPixel(i, j)) {
           x_sum++;
         }
@@ -45,24 +45,24 @@ class Field {
   }
 
   std::vector<size_t> CondenseXes(const std::vector<size_t>& max_xes) {
-    size_t begin1 = 0, begin2 = 0, end1 = 0;
-    for (size_t i = 0; i < max_xes.size(); i++) {
+    size_t begin1 = max_xes[0], begin2 = 0, end1 = 0;
+    for (size_t i = 0; i < max_xes.size() - 1; i++) {
       if (max_xes[i + 1] != max_xes[i] + 1) {
         begin2 = max_xes[i + 1];
         end1 = max_xes[i];
       }
     }
-    return {begin1, end1, begin2, begin2 + (end1 - begin1 + 1)};
+    return {begin1, end1, begin2, max_xes.back()};
   }
 
   std::vector<size_t> FindBorderY(size_t x) {
     size_t min_y = image.height - 1;
 
-    while (!image.IsBlackPixel(x, min_y))
+    while (!image.IsBlackPixel(x, min_y--))
       ;
 
     size_t max_y = 0;
-    while (!image.IsBlackPixel(x, max_y))
+    while (!image.IsBlackPixel(x, max_y++))
       ;
 
     return {min_y, max_y};
@@ -106,7 +106,7 @@ class Field {
 
         figures[i + 1][j + 1] = DetectFigure(
             current_center + point{-cell_width / 2, -cell_width / 2});
-        std::cout << figures[i + 1][j + 1] << " ";
+        std::cout << figures[i + 1][j + 1] << " " << std::endl;
       }
       std::cout << std::endl;
     }
