@@ -3,6 +3,11 @@
 
 #include "image.hpp"
 
+using point = std::pair<size_t, size_t>;
+point operator+(const point& a, const point& b) {
+  return point{a.first + b.first, a.second + b.second};
+}
+
 class Field {
  public:
   std::vector<size_t> ScanArea(int x_begin, int y_begin, int dx, int dy) {
@@ -78,8 +83,40 @@ class Field {
     center = {center_x, center_y};
   }
 
+  auto DetectFigure(point a) {
+    size_t x_begin = a.first, y_begin = a.second;
+    if (image.IsBlackPixel(x_begin + cell_width / 2,
+                           y_begin + cell_width / 2)) {
+      return 1;  // cross
+    }
+
+    auto x_sum = ScanArea(x_begin, y_begin, cell_width, cell_width);
+    if (x_sum[x_sum.size() / 2] != 0) {
+      return -1;  // circle
+    } else {
+      return 0;
+    }
+  }
+
+  void FindFigures() {
+    for (int i = -1; i <= 1; i++) {
+      for (int j = -1; j <= 1; j++) {
+        size_t delta = cell_width + bar_width;
+        point current_center = center + point{i * delta, j * delta};
+
+        figures[i + 1][j + 1] = DetectFigure(
+            current_center + point{-cell_width / 2, -cell_width / 2});
+        std::cout << figures[i + 1][j + 1] << " ";
+      }
+      std::cout << std::endl;
+    }
+  }
+
  private:
   size_t cell_width = 0, bar_width = 0;
+  using point = std::pair<size_t, size_t>;
   std::pair<size_t, size_t> center;
+  int figures[3][3];
   const Image& image;
 };
+
