@@ -50,7 +50,7 @@ class Field {
         end1 = max_xes[i];
       }
     }
-    return { begin1, end1, begin2, begin2 + () }
+    return {begin1, end1, begin2, begin2 + (end1 - begin1 + 1)};
   }
 
  private:
